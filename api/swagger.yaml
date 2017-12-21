@@ -1,0 +1,207 @@
+---
+swagger: "2.0"
+info:
+  description: "Sample API for managing durns. For this sample, you can use the api\
+    \ key `special-key` to test the authorization filters."
+  version: "1.0.0"
+  title: "TJack durn manager"
+  contact:
+    email: "on.three.email@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+- name: "Durns"
+  description: "Basic Durns management"
+schemes:
+- "http"
+paths:
+  /balance/vhost:
+    get:
+      tags:
+      - "Durns"
+      summary: "Get account details."
+      description: "Fetch account details for a user via their vhost"
+      operationId: "getDurnsFromVHost"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Vhost to get balance for."
+        required: true
+        schema:
+          $ref: "#/definitions/VHost"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Account"
+        400:
+          description: "Invalid vhost supplied"
+        404:
+          description: "vhost not found"
+      x-swagger-router-controller: "Durns"
+  /balance/acccount/{account}:
+    get:
+      tags:
+      - "Durns"
+      summary: "Get account details."
+      description: "Fetch account details for a user via their vhost"
+      operationId: "getDurnsFromAccount"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "account"
+        in: "path"
+        description: "The account number we're requesting info on."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Account"
+        400:
+          description: "Invalid vhost supplied"
+        404:
+          description: "vhost not found"
+      x-swagger-router-controller: "Durns"
+  /pay/account:
+    post:
+      tags:
+      - "Durns"
+      summary: "Create a payment."
+      description: "Send coins from one user to another using account numbers."
+      operationId: "createPaymentByAccount"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/AccountPayment"
+      responses:
+        200:
+          description: "Successful Payment"
+        400:
+          description: "Invalid vhost supplied"
+        404:
+          description: "Insufficient funds"
+      security:
+      - ApiKeyAuth: []
+      x-swagger-router-controller: "Durns"
+  /pay/vhost:
+    post:
+      tags:
+      - "Durns"
+      summary: "Create a payment."
+      description: "Send coins from one user to another using vhosts."
+      operationId: "createPaymentByVhost"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/VHostPayment"
+      responses:
+        200:
+          description: "Successful Payment"
+        400:
+          description: "Invalid vhost supplied"
+        404:
+          description: "Insufficient funds"
+      security:
+      - ApiKeyAuth: []
+      x-swagger-router-controller: "Durns"
+  /pick:
+    get:
+      tags:
+      - "Durns"
+      summary: "Update system."
+      description: "Upon IRC utterance, this api should be called by a bot."
+      operationId: "pickVHost"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "IRC post+vhost to update system."
+        required: true
+        schema:
+          $ref: "#/definitions/Utterance"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - ApiKeyAuth: []
+      x-swagger-router-controller: "Durns"
+securityDefinitions:
+  ApiKeyAuth:
+    type: "apiKey"
+    name: "X-API-KEY"
+    in: "header"
+  full_auth:
+    type: "oauth2"
+    authorizationUrl: "http://xxx.xxx/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:account: "modify an account"
+      read:account: "read an account"
+definitions:
+  VHost:
+    type: "string"
+    example: "~tjack@wow.such.durns"
+  Address:
+    type: "string"
+    example: "xxx-xxx-xxx-xxx"
+  Account:
+    type: "object"
+    properties:
+      vhost:
+        type: "string"
+      address:
+        type: "string"
+      balance:
+        type: "number"
+  AccountPayment:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+        example: "xxx-xxx-xxx-xxx"
+      to:
+        type: "string"
+        example: "xxx-xxx-xxx-xxx"
+      amount:
+        type: "number"
+        example: 100.5
+  VHostPayment:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+        example: "~tjack@wow.such.durns"
+      to:
+        type: "string"
+        example: "~tjack@wow.such.durns"
+      amount:
+        type: "number"
+        example: 100.5
+  Utterance:
+    type: "object"
+    properties:
+      vhost:
+        type: "string"
+        example: "~tjack@wow.such.durns"
+      nick:
+        type: "string"
+        example: "tjack"
+      post:
+        type: "string"
+        example: "Wow, such durns!"
