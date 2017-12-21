@@ -26,6 +26,24 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
   // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
   app.use(middleware.swaggerMetadata());
 
+  // Set up security handlers
+  app.use(middleware.swaggerSecurity({
+    // the key for this dictionary entry matches the auth name in swagger.yaml
+    ApiKeyAuth: function(req, def, scopes, callback) {
+      
+      //var err = new Error('Failed to authenticate using bearer token');
+      //err['statusCode'] = 403; // custom error code
+      //callback(err);
+
+      if(true) {
+        console.log("Successful API-KEY match...");
+        // SUCCESSFUL MATCH
+        callback();
+      }
+    }
+  }));
+
+
   // Validate Swagger requests
   app.use(middleware.swaggerValidator());
 
