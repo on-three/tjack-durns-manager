@@ -21,12 +21,14 @@ class DummyDurns {
     this._accountLookup = {};
 
     // TODO: these should be some kind of static enum
+    this.ACCOUNT_FOUND = 200;
+    this.ACCOUNT_CREATED = 201;
     this.PAYMENT_SUCCESS = 200;
     this.PAYMENT_ERR_INCORRECT_ADDRESS = 401;
     this.PAYMENT_ERR_INSUFFICIENT_FUNDS = 402;
 }
 
-  addAccountIfLacking(vhost) {
+  addAccount(vhost) {
     var _a = new DummyAccount(vhost);
     this._accounts.push(_a);
     this._vhostLookup[vhost] = _a;
@@ -34,13 +36,24 @@ class DummyDurns {
     return _a;
   }
 
-  getAccountFromVHost(vhost) {
+  getOrCreateAccount(vhost) {
     if(!(vhost in this._vhostLookup))
     {
-      console.log("Adding account for vhost: ", vhost);
-      return this.addAccountIfLacking(vhost);
+      console.log("*** Adding account for vhost: ", vhost);
+      var _a = this.addAccount(vhost);
+      return _a;
     }else{
+      console.log("*** fetching already existing account for vhost:", vhost);
       return this._vhostLookup[vhost];
+    }
+  }
+
+  accountExists(vhost) {
+    if(!(vhost in this._vhostLookup))
+    {
+      return false;
+    }else{
+      return true;
     }
   }
   getAccount(address) {

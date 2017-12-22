@@ -109,7 +109,8 @@ exports.getDurnsFromAccount = function(args, res, next) {
     res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
   }else{
     console.log("No account found.");
-    res.end();
+    res.statusCode = 400;
+    res.end("No account found.");
   }
 }
 
@@ -125,7 +126,13 @@ exports.getDurnsFromVHost = function(args, res, next) {
   console.log("args.body: ", args);
   var vhost = args.body.value.vhost;
 
-  var account = dummyDurns.getAccountFromVHost(vhost);
+  var response = dummyDurns.ACCOUNT_FOUND; 
+  //if(!dummyDurns.accountExists(vhost))
+  //{
+  //  response = dummyDurns.ACCOUNT_CREATED;
+  //}
+
+  var account = dummyDurns.getOrCreateAccount(vhost);
   if(account)
   {
     console.log("Account vhost: ", account._vhost, " address: ", account._address, "balance: ", account._balance);
@@ -136,9 +143,12 @@ exports.getDurnsFromVHost = function(args, res, next) {
     "balance" : account._balance
     }
     res.setHeader('Content-Type', 'application/json');
+    res.statusCode = response;
     res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
   }else{
+    // this should not really happen for ths handler.
     console.log("No account found.");
+    res.statusCode = 400;
     res.end();
   }
 }

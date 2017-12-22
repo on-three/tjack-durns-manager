@@ -20,8 +20,8 @@ paths:
     post:
       tags:
       - "Durns"
-      summary: "Get account details."
-      description: "Fetch account details for a user via their vhost"
+      summary: "Get/Create account."
+      description: "Get or create an account based on IRC hostmask."
       operationId: "getDurnsFromVHost"
       produces:
       - "application/json"
@@ -34,20 +34,20 @@ paths:
           $ref: "#/definitions/VHost"
       responses:
         200:
-          description: "successful operation"
+          description: "Account found."
           schema:
             $ref: "#/definitions/Account"
-        400:
-          description: "Invalid vhost supplied"
-        404:
-          description: "vhost not found"
+        201:
+          description: "Account created."
+          schema:
+            $ref: "#/definitions/Account"
       x-swagger-router-controller: "Durns"
   /balance/acccount/{address}:
     get:
       tags:
       - "Durns"
-      summary: "Get account details."
-      description: "Fetch account details for a user via their vhost"
+      summary: "Get account by address."
+      description: "Get account details by account address."
       operationId: "getDurnsFromAccount"
       produces:
       - "application/json"
@@ -63,9 +63,7 @@ paths:
           schema:
             $ref: "#/definitions/Account"
         400:
-          description: "Invalid vhost supplied"
-        404:
-          description: "vhost not found"
+          description: "Account not found"
       x-swagger-router-controller: "Durns"
   /pay/account:
     post:
