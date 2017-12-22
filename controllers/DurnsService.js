@@ -13,7 +13,27 @@ exports.createPaymentByAccount = function(args, res, next) {
    * no response value expected for this operation
    **/
 
-  console.log(args);
+   console.log(args);
+
+   console.log(args);
+   var from = args.body.value.from;
+   var to = args.body.value.to;
+   var amount = args.body.value.amount;
+
+   var paymentResult = dummyDurns.pay(from, to, amount);
+   if(paymentResult == dummyDurns.PAYMENT_SUCCESS)
+   {
+      console.log("Payment success");
+   }
+   else if (paymentResult == dummyDunrs.PAYMENT_ERR_INSUFFICIENT_FUNDS)
+   {
+      console.log("Payment insufficient funds.");
+   }
+   else
+   {
+      //PAYMENT_ERR_INCORRECT_ADDRESS;
+      console.log("Payment incorrect address parameter.");
+   }
 
   res.end();
 }
@@ -27,6 +47,25 @@ exports.createPaymentByVhost = function(args, res, next) {
    * no response value expected for this operation
    **/
    console.log(args);
+   var from = args.body.value.from;
+   var to = args.body.value.to;
+   var amount = args.body.value.amount;
+
+   var paymentResult = dummyDurns.pay(from, to, amount);
+   if(paymentResult == dummyDurns.PAYMENT_SUCCESS)
+   {
+      console.log("Payment success");
+   }
+   else if (paymentResult == dummyDunrs.PAYMENT_ERR_INSUFFICIENT_FUNDS)
+   {
+      console.log("Payment insufficient funds.");
+   }
+   else
+   {
+      //PAYMENT_ERR_INCORRECT_ADDRESS;
+      console.log("Payment incorrect address parameter.");
+   }
+  
   res.end();
 }
 

@@ -19,7 +19,12 @@ class DummyDurns {
     this._accounts = [];
     this._vhostLookup = {};
     this._accountLookup = {};
-  }
+
+    // TODO: these should be some kind of static enum
+    this.PAYMENT_SUCCESS = 200;
+    this.PAYMENT_ERR_INCORRECT_ADDRESS = 401;
+    this.PAYMENT_ERR_INSUFFICIENT_FUNDS = 402;
+}
 
   addAccountIfLacking(vhost) {
     var _a = new DummyAccount(vhost);
@@ -48,7 +53,9 @@ class DummyDurns {
     }
   }
 
+  
   pay(from, to, amount) {
+    console.log("Doing payment from: ", from, " to: ", to, " for amount: ", amount);
     // first look up as vhosts
     if(from in this._vhostLookup && to in this._vhostLookup)
     {
@@ -56,11 +63,11 @@ class DummyDurns {
       var t = this._vhostLookup[to];
       if(f._balance < amount)
       {
-        return false;
+        return this.PAYMENT_ERR_INSUFFICIENT_FUNDS;
       }
       f._balance -= amount;
       t._balance += amount;
-      return true;
+      return this.PAYMENT_SUCCESS;
     }
     else if(from in this._accountLookup && to in this._accountLookup)
     {
@@ -68,15 +75,15 @@ class DummyDurns {
       var t = this._accountLookup[to];
       if(f._balance < amount)
       {
-        return false;
+        return this.PAYMENT_ERROR_INSUFFICIENT_FUNDS;
       }
       f._balance -= amount;
       t._balance += amount;
-      return true;
+      return this.PAYMENT_SUCCESS;
     }
     else
     {
-      return false;
+      return this.PAYMENT_ERR_INCORRECT_ADDRESS;
     }
   }
   
