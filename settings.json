@@ -1,3 +1,4 @@
 {
-  "API-KEY": "abcde"
+  "API-KEY": "special-key",
+  "PORT" : 8080
 }

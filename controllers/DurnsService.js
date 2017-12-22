@@ -1,7 +1,7 @@
 'use strict';
 
 var DummyDurns = require('./DummyDurns.js');
-var dummyDurns = new DummyDurns();
+var durnsManager = new DummyDurns();
 
 
 exports.createPaymentByAccount = function(args, res, next) {
@@ -20,14 +20,14 @@ exports.createPaymentByAccount = function(args, res, next) {
    var to = args.body.value.to;
    var amount = args.body.value.amount;
 
-   var paymentResult = dummyDurns.pay(from, to, amount);
+   var paymentResult = durnsManager.pay(from, to, amount);
    console.log("paymentResult: ", paymentResult);
-   console.log("class paymentResult: ", dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS);
-   if(paymentResult == dummyDurns.PAYMENT_SUCCESS)
+   console.log("class paymentResult: ", durnsManager.PAYMENT_ERR_INSUFFICIENT_FUNDS);
+   if(paymentResult == durnsManager.PAYMENT_SUCCESS)
    {
       console.log("Payment success");
    }
-   else if (paymentResult == dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS)
+   else if (paymentResult == durnsManager.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
       console.log("Payment insufficient funds.");
       res.statusCode = paymentResult;
@@ -59,12 +59,12 @@ exports.createPaymentByVhost = function(args, res, next) {
    var to = args.body.value.to;
    var amount = args.body.value.amount;
 
-   var paymentResult = dummyDurns.pay(from, to, amount);
-   if(paymentResult == dummyDurns.PAYMENT_SUCCESS)
+   var paymentResult = durnsManager.pay(from, to, amount);
+   if(paymentResult == durnsManager.PAYMENT_SUCCESS)
    {
       console.log("Payment success");
    }
-   else if (paymentResult == dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS)
+   else if (paymentResult == durnsManager.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
       console.log("Payment insufficient funds.");
       res.statusCode= paymentResult;
@@ -95,7 +95,7 @@ exports.getDurnsFromAccount = function(args, res, next) {
 
   var address = args.address.value;
 
-  var account = dummyDurns.getAccount(address);
+  var account = durnsManager.getAccount(address);
   if(account)
   {
     console.log("Account vhost: ", account._vhost, " address: ", account._address, "balance: ", account._balance);
@@ -126,13 +126,13 @@ exports.getDurnsFromVHost = function(args, res, next) {
   console.log("args.body: ", args);
   var vhost = args.body.value.vhost;
 
-  var response = dummyDurns.ACCOUNT_FOUND; 
-  //if(!dummyDurns.accountExists(vhost))
+  var response = durnsManager.ACCOUNT_FOUND; 
+  //if(!durnsManager.accountExists(vhost))
   //{
-  //  response = dummyDurns.ACCOUNT_CREATED;
+  //  response = durnsManager.ACCOUNT_CREATED;
   //}
 
-  var account = dummyDurns.getOrCreateAccount(vhost);
+  var account = durnsManager.getOrCreateAccount(vhost);
   if(account)
   {
     console.log("Account vhost: ", account._vhost, " address: ", account._address, "balance: ", account._balance);
@@ -162,7 +162,7 @@ exports.pickVHost = function(args, res, next) {
    * no response value expected for this operation
    **/
   
-  dummyDurns.mine();
+  durnsManager.mine();
 
   res.end();
 }

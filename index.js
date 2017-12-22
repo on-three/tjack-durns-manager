@@ -1,5 +1,7 @@
 'use strict';
 
+var settings = require('./settings.json');
+
 var fs = require('fs'),
     path = require('path'),
     http = require('http');
@@ -7,9 +9,8 @@ var fs = require('fs'),
 var app = require('connect')();
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
-var serverPort = 8080;
+var serverPort = settings.PORT;
 
-var settings = require('./settings.json');
 
 // swaggerRouter configuration
 var options = {
