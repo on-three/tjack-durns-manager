@@ -30,7 +30,7 @@ exports.createPaymentByAccount = function(args, res, next) {
    else if (paymentResult == dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
       console.log("Payment insufficient funds.");
-      res.statusCode = 401;
+      res.statusCode = paymentResult;
       res.end("Payment insufficient funds.");
       return;
    }
@@ -38,7 +38,7 @@ exports.createPaymentByAccount = function(args, res, next) {
    {
       //PAYMENT_ERR_INCORRECT_ADDRESS;
       console.log("Payment incorrect address parameter.");
-      res.statusCode = 402;
+      res.statusCode = paymentResult;
       res.end("Payment incorrect address parameter.");
       return; 
    }
@@ -67,7 +67,7 @@ exports.createPaymentByVhost = function(args, res, next) {
    else if (paymentResult == dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
       console.log("Payment insufficient funds.");
-      res.statusCode= 401;
+      res.statusCode= paymentResult;
       res.end("Payment insufficient funds.");
       return;
    }
@@ -75,7 +75,7 @@ exports.createPaymentByVhost = function(args, res, next) {
    {
       //PAYMENT_ERR_INCORRECT_ADDRESS;
       console.log("Payment incorrect address parameter.");
-      res.statusCode = 402;
+      res.statusCode = paymentResult;
       res.end("Payment incorrect address parameter");
       return;
    }
