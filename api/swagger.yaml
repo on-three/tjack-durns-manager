@@ -83,12 +83,18 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/AccountPayment"
+      - in: header
+        name: X-API-KEY
+        type: string
+        required: true
       responses:
         200:
           description: "Successful Payment"
         400:
-          description: "Invalid vhost supplied"
-        404:
+          description: "Incorrect API Key"
+        401:
+          description: "Invalid vhost"
+        402:
           description: "Insufficient funds"
       security:
       - ApiKeyAuth: []
@@ -109,12 +115,18 @@ paths:
         required: true
         schema:
           $ref: "#/definitions/VHostPayment"
+      - in: header
+        name: X-API-KEY
+        type: string
+        required: true
       responses:
         200:
           description: "Successful Payment"
         400:
-          description: "Invalid vhost supplied"
-        404:
+          description: "Incorrect API Key"
+        401:
+          description: "Invalid address"
+        402:
           description: "Insufficient funds"
       security:
       - ApiKeyAuth: []
@@ -146,13 +158,6 @@ securityDefinitions:
     type: "apiKey"
     name: "X-API-KEY"
     in: "header"
-  full_auth:
-    type: "oauth2"
-    authorizationUrl: "http://xxx.xxx/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:account: "modify an account"
-      read:account: "read an account"
 definitions:
   VHost:
     type: "string"

@@ -31,14 +31,12 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     // the key for this dictionary entry matches the auth name in swagger.yaml
     ApiKeyAuth: function(req, def, scopes, callback) {
       
-      //var err = new Error('Failed to authenticate using bearer token');
-      //err['statusCode'] = 403; // custom error code
-      //callback(err);
-
-      if(true) {
-        console.log("Successful API-KEY match...");
-        // SUCCESSFUL MATCH
+      if(req.swagger.params['X-API-KEY'].value == 'abcde') {
         callback();
+      }else{
+        var err = new Error('Api-key incorrect.');
+        err['statusCode'] = 400;
+        callback(err);
       }
     }
   }));
