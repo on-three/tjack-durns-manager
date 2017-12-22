@@ -9,6 +9,8 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var serverPort = 8080;
 
+var settings = require('./settings.json');
+
 // swaggerRouter configuration
 var options = {
   swaggerUi: path.join(__dirname, '/swagger.json'),
@@ -31,7 +33,7 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     // the key for this dictionary entry matches the auth name in swagger.yaml
     ApiKeyAuth: function(req, def, scopes, callback) {
       
-      if(req.swagger.params['X-API-KEY'].value == 'abcde') {
+      if(req.swagger.params['X-API-KEY'].value == settings['API-KEY']) {
         callback();
       }else{
         var err = new Error('Api-key incorrect.');
