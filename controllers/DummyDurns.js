@@ -39,11 +39,9 @@ class DummyDurns {
   getOrCreateAccount(vhost) {
     if(!(vhost in this._vhostLookup))
     {
-      console.log("*** Adding account for vhost: ", vhost);
       var _a = this.addAccount(vhost);
       return _a;
     }else{
-      console.log("*** fetching already existing account for vhost:", vhost);
       return this._vhostLookup[vhost];
     }
   }
@@ -57,7 +55,6 @@ class DummyDurns {
     }
   }
   getAccount(address) {
-    //console.trace("looking up account ",address);
     if(address in this._accountLookup)
     {
       return this._accountLookup[address];
@@ -68,7 +65,6 @@ class DummyDurns {
 
   
   pay(from, to, amount) {
-    console.log("Doing payment from: ", from, " to: ", to, " for amount: ", amount);
     // first look up as vhosts
     if(from in this._vhostLookup && to in this._vhostLookup)
     {
@@ -76,7 +72,6 @@ class DummyDurns {
       var t = this._vhostLookup[to];
       if(f._balance < amount)
       {
-        console.log("*** pay insufficient funds 1.");
         return this.PAYMENT_ERR_INSUFFICIENT_FUNDS;
       }
       f._balance -= amount;
@@ -89,7 +84,6 @@ class DummyDurns {
       var t = this._accountLookup[to];
       if(f._balance < amount)
       {
-        console.log("*** pay insufficient funds 2.");
         return this.PAYMENT_ERR_INSUFFICIENT_FUNDS;
       }
       f._balance -= amount;
@@ -98,7 +92,6 @@ class DummyDurns {
     }
     else
     {
-      console.log("*** pay incorrect address.");
       return this.PAYMENT_ERR_INCORRECT_ADDRESS;
     }
   }
