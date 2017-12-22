@@ -3,7 +3,7 @@ swagger: "2.0"
 info:
   description: "Sample API for managing durns. For this sample, you can use the api\
     \ key `special-key` to test the authorization filters."
-  version: "1.0.0"
+  version: "0.1"
   title: "TJack durn manager"
   contact:
     email: "on.three.email@gmail.com"
@@ -11,15 +11,19 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 tags:
-- name: "Durns"
-  description: "Basic Durns management"
+- name: "Accounts"
+  description: "Get or create account details."
+- name: "Payment"
+  description: "Move Durns from one account to another."
+- name: "Misc"
+  description: "TBD"
 schemes:
 - "http"
 paths:
   /balance/vhost:
     post:
       tags:
-      - "Durns"
+      - "Accounts"
       summary: "Get/Create account."
       description: "Get or create an account based on IRC hostmask."
       operationId: "getDurnsFromVHost"
@@ -45,8 +49,8 @@ paths:
   /balance/acccount/{address}:
     get:
       tags:
-      - "Durns"
-      summary: "Get account by address."
+      - "Accounts"
+      summary: "Get account."
       description: "Get account details by account address."
       operationId: "getDurnsFromAccount"
       produces:
@@ -68,7 +72,7 @@ paths:
   /pay/account:
     post:
       tags:
-      - "Durns"
+      - "Payment"
       summary: "Create a payment."
       description: "Send coins from one user to another using account numbers."
       operationId: "createPaymentByAccount"
@@ -102,7 +106,7 @@ paths:
   /pay/vhost:
     post:
       tags:
-      - "Durns"
+      - "Payment"
       summary: "Create a payment."
       description: "Send coins from one user to another using vhosts."
       operationId: "createPaymentByVhost"
@@ -136,7 +140,7 @@ paths:
   /pick:
     get:
       tags:
-      - "Durns"
+      - "Misc"
       summary: "Update system."
       description: "Upon IRC utterance, this api should be called by a bot."
       operationId: "pickVHost"
