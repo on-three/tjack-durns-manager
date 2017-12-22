@@ -87,7 +87,9 @@ paths:
         required: true
       responses:
         200:
-          description: "Successful Payment"
+          description: "Successful payment"
+          schema:
+            $ref: "#/definitions/PaymentComplete"
         400:
           description: "Incorrect API Key"
         401:
@@ -119,7 +121,9 @@ paths:
         required: true
       responses:
         200:
-          description: "Successful Payment"
+          description: "Successful payment"
+          schema:
+            $ref: "#/definitions/PaymentComplete"
         400:
           description: "Incorrect API Key"
         401:
@@ -196,6 +200,33 @@ definitions:
       amount:
         type: "number"
         example: 100.5
+  PaymentComplete:
+    type: "object"
+    properties:
+      from:
+        type: "object"
+        properties:
+          vhost:
+            type: "string"
+            example: "~tjack@wow.such.durns"
+          address:
+            type: "string"
+            example: "xxx-xxx-xxx-xxx"
+          balance:
+            type: "number"
+            example: "100.05"
+      to:
+        type: "object"
+        properties:
+          vhost:
+            type: "string"
+            example: "~tjack2@wow.such.durns"
+          address:
+            type: "string"
+            example: "yyy-yyy-yyy-yyy"
+          balance:
+            type: "number"
+            example: "100.05"
   Utterance:
     type: "object"
     properties:

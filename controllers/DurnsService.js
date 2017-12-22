@@ -16,11 +16,29 @@ exports.createPaymentByAccount = function(args, res, next) {
    var from = args.body.value.from;
    var to = args.body.value.to;
    var amount = args.body.value.amount;
-
+   
+   var f = durnsManager.getAccount(from);
+   var t = durnsManager.getAccount(to);
    var paymentResult = durnsManager.pay(from, to, amount);
-   if(paymentResult == durnsManager.PAYMENT_SUCCESS)
+
+   if(f && t && paymentResult == durnsManager.PAYMENT_SUCCESS)
    {
-      console.log("Payment success");
+    var examples = {};
+    examples['application/json'] = {
+      "from" : {
+        "vhost" : f._vhost,
+        "address" : f._address,
+        "balance" : f._balance
+      },
+      "to" : {
+        "vhost" : t._vhost,
+        "address" : t._address,
+        "balance" : t._balance
+      }
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
+    console.log("Payment success");
    }
    else if (paymentResult == durnsManager.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
@@ -50,11 +68,29 @@ exports.createPaymentByVhost = function(args, res, next) {
    var from = args.body.value.from;
    var to = args.body.value.to;
    var amount = args.body.value.amount;
-
+   
+   var f = durnsManager.getOrCreateAccount(from);
+   var t = durnsManager.getOrCreateAccount(to);
    var paymentResult = durnsManager.pay(from, to, amount);
-   if(paymentResult == durnsManager.PAYMENT_SUCCESS)
+
+   if(f && t && paymentResult == durnsManager.PAYMENT_SUCCESS)
    {
-      console.log("Payment success");
+    var examples = {};
+    examples['application/json'] = {
+      "from" : {
+        "vhost" : f._vhost,
+        "address" : f._address,
+        "balance" : f._balance
+      },
+      "to" : {
+        "vhost" : t._vhost,
+        "address" : t._address,
+        "balance" : t._balance
+      }
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
+    console.log("Payment success");
    }
    else if (paymentResult == durnsManager.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
