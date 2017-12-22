@@ -63,6 +63,7 @@ class DummyDurns {
       var t = this._vhostLookup[to];
       if(f._balance < amount)
       {
+        console.log("*** pay insufficient funds 1.");
         return this.PAYMENT_ERR_INSUFFICIENT_FUNDS;
       }
       f._balance -= amount;
@@ -75,7 +76,8 @@ class DummyDurns {
       var t = this._accountLookup[to];
       if(f._balance < amount)
       {
-        return this.PAYMENT_ERROR_INSUFFICIENT_FUNDS;
+        console.log("*** pay insufficient funds 2.");
+        return this.PAYMENT_ERR_INSUFFICIENT_FUNDS;
       }
       f._balance -= amount;
       t._balance += amount;
@@ -83,6 +85,7 @@ class DummyDurns {
     }
     else
     {
+      console.log("*** pay incorrect address.");
       return this.PAYMENT_ERR_INCORRECT_ADDRESS;
     }
   }

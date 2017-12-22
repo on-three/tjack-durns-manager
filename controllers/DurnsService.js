@@ -21,21 +21,29 @@ exports.createPaymentByAccount = function(args, res, next) {
    var amount = args.body.value.amount;
 
    var paymentResult = dummyDurns.pay(from, to, amount);
+   console.log("paymentResult: ", paymentResult);
+   console.log("class paymentResult: ", dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS);
    if(paymentResult == dummyDurns.PAYMENT_SUCCESS)
    {
       console.log("Payment success");
    }
-   else if (paymentResult == dummyDunrs.PAYMENT_ERR_INSUFFICIENT_FUNDS)
+   else if (paymentResult == dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
       console.log("Payment insufficient funds.");
+      res.statusCode = 401;
+      res.end("Payment insufficient funds.");
+      return;
    }
    else
    {
       //PAYMENT_ERR_INCORRECT_ADDRESS;
       console.log("Payment incorrect address parameter.");
+      res.statusCode = 402;
+      res.end("Payment incorrect address parameter.");
+      return; 
    }
 
-  res.end();
+  res.end("Payment success");
 }
 
 exports.createPaymentByVhost = function(args, res, next) {
@@ -56,17 +64,23 @@ exports.createPaymentByVhost = function(args, res, next) {
    {
       console.log("Payment success");
    }
-   else if (paymentResult == dummyDunrs.PAYMENT_ERR_INSUFFICIENT_FUNDS)
+   else if (paymentResult == dummyDurns.PAYMENT_ERR_INSUFFICIENT_FUNDS)
    {
       console.log("Payment insufficient funds.");
+      res.statusCode= 401;
+      res.end("Payment insufficient funds.");
+      return;
    }
    else
    {
       //PAYMENT_ERR_INCORRECT_ADDRESS;
       console.log("Payment incorrect address parameter.");
+      res.statusCode = 402;
+      res.end("Payment incorrect address parameter");
+      return;
    }
   
-  res.end();
+  res.end("Payment success.");
 }
 
 exports.getDurnsFromAccount = function(args, res, next) {
