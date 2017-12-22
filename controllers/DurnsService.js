@@ -38,13 +38,14 @@ exports.getDurnsFromAccount = function(args, res, next) {
    * account String The account number we're requesting info on.
    * returns Account
    **/
+  console.log(args);
 
-  var address = args.body.address;
+  var address = args.address.value;
 
-  var account = dummyDurns.getAccount("1");
+  var account = dummyDurns.getAccount(address);
   if(account)
   {
-    console.log("Account vhost: ", account._vhost, " address: ", acccount._address, "balance: ", account._balance);
+    console.log("Account vhost: ", account._vhost, " address: ", account._address, "balance: ", account._balance);
     var examples = {};
     examples['application/json'] = {
     "vhost" : account._vhost,

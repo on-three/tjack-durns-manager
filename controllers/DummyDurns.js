@@ -25,7 +25,7 @@ class DummyDurns {
     var _a = new DummyAccount(vhost);
     this._accounts.push(_a);
     this._vhostLookup[vhost] = _a;
-    this._accountLookup[_a._account] = _a;
+    this._accountLookup[_a._address] = _a;
     return _a;
   }
 
@@ -39,6 +39,7 @@ class DummyDurns {
     }
   }
   getAccount(address) {
+    //console.trace("looking up account ",address);
     if(address in this._accountLookup)
     {
       return this._accountLookup[address];

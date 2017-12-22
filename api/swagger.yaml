@@ -42,7 +42,7 @@ paths:
         404:
           description: "vhost not found"
       x-swagger-router-controller: "Durns"
-  /balance/acccount/{account}:
+  /balance/acccount/{address}:
     get:
       tags:
       - "Durns"
@@ -52,7 +52,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "account"
+      - name: "address"
         in: "path"
         description: "The account number we're requesting info on."
         required: true
