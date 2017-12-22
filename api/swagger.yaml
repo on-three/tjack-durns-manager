@@ -17,7 +17,7 @@ schemes:
 - "http"
 paths:
   /balance/vhost:
-    get:
+    post:
       tags:
       - "Durns"
       summary: "Get account details."
@@ -28,7 +28,7 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "Vhost to get balance for."
+        description: "Vhost to fetch"
         required: true
         schema:
           $ref: "#/definitions/VHost"
@@ -160,11 +160,11 @@ securityDefinitions:
     in: "header"
 definitions:
   VHost:
-    type: "string"
-    example: "~tjack@wow.such.durns"
-  Address:
-    type: "string"
-    example: "xxx-xxx-xxx-xxx"
+    type: "object"
+    properties:
+      vhost:
+        type: "string"
+        example: "~tjack@wow.such.durns"
   Account:
     type: "object"
     properties:

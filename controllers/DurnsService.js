@@ -1,5 +1,9 @@
 'use strict';
 
+var DummyDurns = require('./DummyDurns.js');
+var dummyDurns = new DummyDurns();
+
+
 exports.createPaymentByAccount = function(args, res, next) {
   /**
    * Create a payment.
@@ -8,6 +12,9 @@ exports.createPaymentByAccount = function(args, res, next) {
    * body AccountPayment Created user object
    * no response value expected for this operation
    **/
+
+  console.log(args);
+
   res.end();
 }
 
@@ -19,6 +26,7 @@ exports.createPaymentByVhost = function(args, res, next) {
    * body VHostPayment Created user object
    * no response value expected for this operation
    **/
+   console.log(args);
   res.end();
 }
 
@@ -30,16 +38,23 @@ exports.getDurnsFromAccount = function(args, res, next) {
    * account String The account number we're requesting info on.
    * returns Account
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "vhost" : "aeiou",
-  "address" : "aeiou",
-  "balance" : 0.80082819046101150206595775671303272247314453125
-};
-  if (Object.keys(examples).length > 0) {
+
+  var address = args.body.address;
+
+  var account = dummyDurns.getAccount("1");
+  if(account)
+  {
+    console.log("Account vhost: ", account._vhost, " address: ", acccount._address, "balance: ", account._balance);
+    var examples = {};
+    examples['application/json'] = {
+    "vhost" : account._vhost,
+    "address" : account._address,
+    "balance" : account._balance
+    }
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
+  }else{
+    console.log("No account found.");
     res.end();
   }
 }
@@ -52,16 +67,24 @@ exports.getDurnsFromVHost = function(args, res, next) {
    * body VHost Vhost to get balance for.
    * returns Account
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "vhost" : "aeiou",
-  "address" : "aeiou",
-  "balance" : 0.80082819046101150206595775671303272247314453125
-};
-  if (Object.keys(examples).length > 0) {
+  //getAccountFromVHost
+  console.log("args.body: ", args);
+  var vhost = args.body.value.vhost;
+
+  var account = dummyDurns.getAccountFromVHost(vhost);
+  if(account)
+  {
+    console.log("Account vhost: ", account._vhost, " address: ", account._address, "balance: ", account._balance);
+    var examples = {};
+    examples['application/json'] = {
+    "vhost" : account._vhost,
+    "address" : account._address,
+    "balance" : account._balance
+    }
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
+  }else{
+    console.log("No account found.");
     res.end();
   }
 }
@@ -74,6 +97,9 @@ exports.pickVHost = function(args, res, next) {
    * body Utterance IRC post+vhost to update system.
    * no response value expected for this operation
    **/
+  
+  dummyDurns.mine();
+
   res.end();
 }
 
